@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+  </head>
+  <body>
+    <p class="greet"></p>
+    <h1>Welcome, <span class="js_display_name"></span>!</h1>
+    <p>Email: <span class="js_display_email"></span></p>
+    <p>Surname: <span class="js_display_surname"></span></p>
+    <button class="logout_button">
+      logout_buton
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="supabaseClient.js"></script>
+    <script>
+      const display_name = document.querySelector('.js_display_name');
+      const display_email = document.querySelector('.js_display_email');
+      const display_surname = document.querySelector('.js_display_surname');
+
+      async function loadDashboard() {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+
+        if (!session) {
+          window.location.href = "login.html";
+          return;
+        }
+
+        const { data: profile, error } = await supabaseClient
+          .from("profiles")
+          .select("first_name, last_name, email")
+          .eq("id", session.user.id)
+          .single();
+
+        if (error) {
+          alert(error.message);
+          return;
+        }
+
+        // This is the part you asked about — pushing DB values into your HTML
+        display_name.textContent = profile.first_name;
+        display_surname.textContent = profile.last_name;
+        display_email.textContent = profile.email;
+      }
+
+      loadDashboard();
+
+      const logout_button = document.querySelector('.logout_button'); // match your actual class name
+
+      logout_button.addEventListener("click", async () => {
+        await supabaseClient.auth.signOut();
+        window.location.href = "login.html";
+      });
+    </script>
+  </body>
+</html>

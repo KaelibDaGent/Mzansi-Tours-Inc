@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Account</title>
+
+    <link rel="stylesheet" type="text/css" href="register.css">
+    <link rel="stylesheet" type="text/css" href="general.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <div class="form">
+        <div class="form_title">
+          <p class="title">
+            Create Account!
+          </p>
+        </div>
+        <div class="name_surname_fields">
+          <div class="name_section">
+            <p>
+              Name:
+            </p>
+            <input class="name_input js_name_input" type="text" required>
+          </div>
+
+          <div class="surname_section">
+            <p>
+              Surname:
+            </p>
+            <input class="surname_input js_surname_input" type="text" required>
+          </div>
+        </div>
+
+        <div class="email_password_section">
+          <p>
+            Email:
+          </p>
+          <input class="email_input js_email_input" type="email" required>
+
+          <p>
+            Password:
+          </p>
+          <input class="password_input js_password_input" type="password" required>
+
+          <p>
+            Confirm Password:
+          </p>
+          <input class="confirm_password_input js_confirm_password_input" type="password" required>
+
+          <p class="log_in">
+            Already have an account? <a href="login.html">Log-in</a>
+          </p>
+        </div>
+        <div class="btn">
+          <button class="submit_button js_submit_button">
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabaseClient.js"></script>
+<script>
+const name_input = document.querySelector('.js_name_input');
+const surname_input = document.querySelector('.js_surname_input');
+const email_input = document.querySelector('.js_email_input');
+const password_input = document.querySelector('.js_password_input');
+const password_confirmation_input = document.querySelector('.js_confirm_password_input');
+const submit_btn = document.querySelector('.js_submit_button');
+
+submit_btn.addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const name = name_input.value;
+  const surname = surname_input.value;
+  const email = email_input.value;
+  const password = password_input.value;
+
+  if (password !== password_confirmation_input.value || password === "") {
+    alert("Passwords are not the same, Please make sure password's match");
+    return;
+  }
+
+  const { data, error } = await supabaseClient.auth.signUp({ email, password });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  const { error: profileError } = await supabaseClient
+    .from("profiles")
+    .insert({
+      id: data.user.id,
+      first_name: name,
+      last_name: surname,
+      email: email
+    });
+
+  if (profileError) {
+    alert(profileError.message);
+    return;
+  }
+
+  window.location.href = "landing_dashboard.html";
+});
+</script>
+  </body>
+</html>

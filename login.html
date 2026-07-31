@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Account</title>
+
+    <link rel="stylesheet" type="text/css" href="register.css">
+    <link rel="stylesheet" type="text/css" href="general.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <div class="form">
+        <div class="form_title">
+          <p class="title">
+            Log-in!
+          </p>
+        </div>
+         <div class="username_password_section">
+            <p>
+              Username:
+            </p>
+            <input class="username_input" type="text" required>
+            
+          <p>
+            Password:
+          </p>
+          <input class="password_input" type="password" required>
+
+          <p class="register">
+            Don't have an account yet? <a href="register_account.html">Register</a>
+          </p>
+        </div>
+        <div class="btn">
+          <button class="submit_button">
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="supabaseClient.js"></script>
+    <script>
+    const username_input = document.querySelector('.username_input');
+    const password_input = document.querySelector('.password_input');
+    const submit_button = document.querySelector('.submit_button');
+
+    submit_button.addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      const email = username_input.value;
+      const password = password_input.value;
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      window.location.href = "landing_dashboard.html";
+    });
+    </script>
+  </body>
+</html>
