@@ -195,7 +195,7 @@ async function guardAndInit() {
 
   // Role values match the Postgres enum exactly: tourist / business / admin
   if (profile.role !== 'business_owner') {
-    window.location.href = profile.role === 'admin' ? 'admin.html' : 'Dashboard.html';
+    window.location.href = profile.role === 'admin' ? 'admin.html' : 'index.html';
     return;
   }
 
