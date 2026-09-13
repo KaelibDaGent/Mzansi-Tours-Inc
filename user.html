@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | Mzansi Tours Inc</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Styles/general.css">
+    <style>
+        /* ==========================================
+           SOUTH AFRICAN TOURISM THEME - PROFILE
+           ========================================== */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(234, 170, 0, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 122, 61, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .profile-hero {
+            background:
+                linear-gradient(135deg, rgba(0, 34, 68, 0.85) 0%, rgba(0, 122, 61, 0.80) 100%),
+                url('https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            color: white;
+            padding: 4rem 1.5rem 6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 0; right: 0;
+            height: 60px;
+            background: var(--bg-main);
+            clip-path: polygon(0 100%, 100% 100%, 100% 0, 50% 100%, 0 0);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .hero-eyebrow {
+            display: inline-block;
+            background: rgba(234, 170, 0, 0.2);
+            color: var(--sa-gold);
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(234, 170, 0, 0.3);
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.6rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.05rem;
+            opacity: 0.95;
+        }
+
+        .profile-container {
+            max-width: 760px;
+            margin: -3rem auto 3rem;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .profile-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .profile-card-header {
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            border-bottom: 1px dashed var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        .avatar-wrap {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .avatar-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--sa-gold);
+            background: var(--bg-main);
+        }
+
+        .avatar-fallback {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid var(--sa-gold);
+            background: linear-gradient(135deg, var(--sa-gold), var(--sa-green));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 800;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .profile-identity h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+        }
+
+        .profile-identity .email {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.25rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .role-badge.tourist { background: rgba(0, 122, 61, 0.12); color: var(--sa-green); }
+        .role-badge.business_owner { background: rgba(234, 170, 0, 0.15); color: #a67300; }
+        .role-badge.admin { background: rgba(0, 34, 68, 0.12); color: var(--sa-blue); }
+
+        .member-since {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.4rem;
+        }
+
+        .profile-form {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.4rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group .hint {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-left: 0.4rem;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="url"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 0.95rem;
+            font-family: inherit;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--sa-gold);
+            box-shadow: 0 0 0 3px rgba(234, 170, 0, 0.15);
+        }
+
+        .form-group input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .business-field {
+            display: none;
+        }
+
+        .business-field.visible {
+            display: block;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 1.8rem;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, var(--sa-green), var(--sa-green-hover));
+            color: white;
+            padding: 0.85rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 122, 61, 0.35);
+        }
+
+        .btn-save:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-reset {
+            background: white;
+            color: var(--text-primary);
+            padding: 0.85rem 1.6rem;
+            border-radius: 50px;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .btn-reset:hover {
+            background: var(--bg-main);
+        }
+
+        .save-status {
+            font-size: 0.88rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .save-status.success {
+            display: block;
+            color: var(--sa-green);
+        }
+
+        .save-status.error {
+            display: block;
+            color: #ef4444;
+        }
+
+        .danger-zone {
+            padding: 1.5rem 2rem 2rem;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .danger-zone h3 {
+            font-size: 0.95rem;
+            color: #ef4444;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .danger-zone p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .btn-danger {
+            background: white;
+            color: #ef4444;
+            padding: 0.7rem 1.4rem;
+            border-radius: 50px;
+            font-weight: 600;
+            border: 2px solid #ef4444;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.88rem;
+        }
+
+        .btn-danger:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .profile-footer {
+            background: var(--sa-blue);
+            color: white;
+            padding: 2rem 1.5rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .footer-tagline {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--sa-gold);
+        }
+
+        .footer-sub {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .profile-card-header { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <section class="profile-hero">
+        <div class="hero-content">
+            <span class="hero-eyebrow"><i class="fa-solid fa-id-card"></i> Account Settings</span>
+            <h1 class="hero-title">My Profile</h1>
+            <p class="hero-subtitle">Manage your details and how you appear on Mzansi Tours.</p>
+        </div>
+    </section>
+
+    <div class="profile-container">
+        <div class="profile-card">
+            <div id="profileLoading" style="padding: 3rem; text-align: center; color: var(--text-muted);">
+                Loading your profile...
+            </div>
+
+            <div id="profileBody" style="display: none;">
+                <div class="profile-card-header">
+                    <div class="avatar-wrap">
+                        <img id="avatarPreview" class="avatar-img" style="display: none;" alt="Profile avatar">
+                        <div id="avatarFallback" class="avatar-fallback">?</div>
+                    </div>
+                    <div class="profile-identity">
+                        <h2 id="displayName">—</h2>
+                        <div class="email" id="displayEmail">—</div>
+                        <span class="role-badge" id="roleBadge"><i class="fa-solid fa-shield"></i> <span id="roleText">—</span></span>
+                        <div class="member-since" id="memberSince"></div>
+                    </div>
+                </div>
+
+                <form class="profile-form" id="profileForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" placeholder="Your full name">
+                    </div>
+
+                    <div class="form-group business-field" id="businessNameGroup">
+                        <label for="businessName">Business Name <span class="hint">(shown on your listings)</span></label>
+                        <input type="text" id="businessName" placeholder="Your business name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="avatarUrl">Avatar Image URL <span class="hint">(paste a link to an image)</span></label>
+                        <input type="url" id="avatarUrl" placeholder="https://...">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-save" id="saveBtn">
+                            <i class="fa-solid fa-check"></i> Save Changes
+                        </button>
+                        <button type="button" class="btn-reset" id="resetBtn">
+                            Discard Changes
+                        </button>
+                    </div>
+
+                    <div class="save-status" id="saveStatus"></div>
+                </form>
+
+                <div class="profile-form" style="border-top: 1px dashed var(--border-color);">
+                    <div class="form-group">
+                        <label for="emailField">Current Email</label>
+                        <input type="text" id="emailField" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="newEmail">Change Email Address <span class="hint">(you'll need to confirm via email before it takes effect)</span></label>
+                        <input type="text" id="newEmail" placeholder="new-email@example.com">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-save" id="changeEmailBtn">
+                            <i class="fa-solid fa-envelope"></i> Update Email
+                        </button>
+                    </div>
+                    <div class="save-status" id="emailStatus"></div>
+                </div>
+
+                <div class="danger-zone">
+                    <h3><i class="fa-solid fa-triangle-exclamation"></i> Danger Zone</h3>
+                    <p>Clearing your avatar and business name resets those fields immediately, without touching anything else.</p>
+                    <button type="button" class="btn-danger" id="clearOptionalBtn">
+                        <i class="fa-regular fa-trash-can"></i> Clear Avatar & Business Name
+                    </button>
+
+                    <p style="margin-top: 1.5rem;">Deleting your account permanently removes your profile, itinerary, reviews, and (for business accounts) your listings — along with anyone else's itinerary entries or reviews tied to those listings. This cannot be undone.</p>
+                    <div class="form-group" style="max-width: 320px;">
+                        <label for="deleteConfirmInput">Type <strong>DELETE</strong> to confirm</label>
+                        <input type="text" id="deleteConfirmInput" placeholder="DELETE">
+                    </div>
+                    <button type="button" class="btn-danger" id="deleteAccountBtn" disabled>
+                        <i class="fa-solid fa-user-slash"></i> Delete My Account Permanently
+                    </button>
+                    <div class="save-status" id="deleteStatus"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="profile-footer">
+        <p class="footer-tagline"><i class="fa-solid fa-compass"></i> Mzansi Tours Inc</p>
+        <p class="footer-sub">Connecting you to South Africa's best kept secrets.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="Scripts/notify.js"></script>
+    <script src="Scripts/supabaseClient.js"></script>
+    <script>
+        let currentUser = null;
+        let currentProfile = null;
+
+        async function guardAndInit() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            currentUser = user;
+            await loadProfile();
+        }
+
+        // ==========================================
+        // READ — fetch the current user's profile row
+        // ==========================================
+        async function loadProfile() {
+            const { data, error } = await supabaseClient
+                .from('profiles')
+                .select('id, email, full_name, role, business_name, avatar_url, created_at')
+                .eq('id', currentUser.id)
+                .single();
+
+            if (error) {
+                console.error('Profile fetch error:', error.message);
+                document.getElementById('profileLoading').textContent =
+                    'Could not load your profile. Please refresh or try again later.';
+                return;
+            }
+
+            currentProfile = data;
+            populateForm(data);
+            document.getElementById('profileLoading').style.display = 'none';
+            document.getElementById('profileBody').style.display = 'block';
+        }
+
+        function populateForm(profile) {
+            document.getElementById('displayName').textContent = profile.full_name || 'Unnamed User';
+            document.getElementById('displayEmail').textContent = profile.email || currentUser.email || '';
+            document.getElementById('emailField').value = profile.email || currentUser.email || '';
+
+            const roleBadge = document.getElementById('roleBadge');
+            const roleText = document.getElementById('roleText');
+            roleBadge.className = 'role-badge ' + (profile.role || '');
+            roleText.textContent = profile.role
+                ? profile.role.charAt(0).toUpperCase() + profile.role.slice(1)
+                : 'Unknown';
+
+            if (profile.created_at) {
+                const d = new Date(profile.created_at);
+                document.getElementById('memberSince').textContent =
+                    'Member since ' + d.toLocaleDateString('en-ZA', { year: 'numeric', month: 'long' });
+            }
+
+            document.getElementById('fullName').value = profile.full_name || '';
+            document.getElementById('businessName').value = profile.business_name || '';
+            document.getElementById('avatarUrl').value = profile.avatar_url || '';
+
+            // Only show the business name field for business accounts
+            const businessGroup = document.getElementById('businessNameGroup');
+            if (profile.role === 'business_owner') {
+                businessGroup.classList.add('visible');
+            } else {
+                businessGroup.classList.remove('visible');
+            }
+
+            updateAvatarPreview(profile.avatar_url, profile.full_name);
+        }
+
+        function updateAvatarPreview(url, name) {
+            const img = document.getElementById('avatarPreview');
+            const fallback = document.getElementById('avatarFallback');
+            if (url) {
+                img.src = url;
+                img.style.display = 'block';
+                fallback.style.display = 'none';
+                img.onerror = () => {
+                    img.style.display = 'none';
+                    fallback.style.display = 'flex';
+                };
+            } else {
+                img.style.display = 'none';
+                fallback.style.display = 'flex';
+                fallback.textContent = (name || currentUser.email || '?').charAt(0).toUpperCase();
+            }
+        }
+
+        // Live preview as the avatar URL field changes
+        document.getElementById('avatarUrl').addEventListener('input', (e) => {
+            updateAvatarPreview(e.target.value, document.getElementById('fullName').value);
+        });
+
+        // ==========================================
+        // UPDATE — save edited profile fields
+        // ==========================================
+        async function saveProfile(updates) {
+            const saveBtn = document.getElementById('saveBtn');
+            const statusEl = document.getElementById('saveStatus');
+
+            saveBtn.disabled = true;
+            statusEl.className = 'save-status';
+            statusEl.textContent = '';
+
+            const { data, error } = await supabaseClient
+                .from('profiles')
+                .update(updates)
+                .eq('id', currentUser.id)
+                .select()
+                .single();
+
+            saveBtn.disabled = false;
+
+            if (error) {
+                statusEl.className = 'save-status error';
+                statusEl.textContent = 'Could not save changes: ' + error.message;
+                return;
+            }
+
+            currentProfile = data;
+            populateForm(data);
+            statusEl.className = 'save-status success';
+            statusEl.textContent = 'Profile updated successfully.';
+            setTimeout(() => { statusEl.textContent = ''; statusEl.className = 'save-status'; }, 3000);
+        }
+
+        document.getElementById('profileForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const updates = {
+                full_name: document.getElementById('fullName').value.trim() || null,
+                avatar_url: document.getElementById('avatarUrl').value.trim() || null
+            };
+
+            // Only persist business_name for business-role accounts
+            if (currentProfile.role === 'business_owner') {
+                updates.business_name = document.getElementById('businessName').value.trim() || null;
+            }
+
+            saveProfile(updates);
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            if (currentProfile) populateForm(currentProfile);
+        });
+
+        // ==========================================
+        // Clear optional fields (avatar / business name only)
+        // ==========================================
+        document.getElementById('clearOptionalBtn').addEventListener('click', async () => {
+            const ok = await showConfirm('Clear your avatar and business name? This cannot be undone.', { danger: true, confirmLabel: 'Clear' });
+            if (!ok) return;
+
+            const updates = { avatar_url: null };
+            if (currentProfile.role === 'business_owner') {
+                updates.business_name = null;
+            }
+            saveProfile(updates);
+        });
+
+        // ==========================================
+        // CHANGE EMAIL — uses Supabase Auth's built-in
+        // confirmation flow rather than writing directly to
+        // the profiles table. By default this sends a
+        // confirmation link to the new address (and, if
+        // "Secure email change" is on in your Supabase Auth
+        // settings, to the old address too) before the change
+        // actually takes effect.
+        // ==========================================
+        document.getElementById('changeEmailBtn').addEventListener('click', async () => {
+            const newEmail = document.getElementById('newEmail').value.trim();
+            const statusEl = document.getElementById('emailStatus');
+            const btn = document.getElementById('changeEmailBtn');
+
+            statusEl.className = 'save-status';
+            statusEl.textContent = '';
+
+            if (!newEmail || !newEmail.includes('@')) {
+                statusEl.className = 'save-status error';
+                statusEl.textContent = 'Enter a valid email address.';
+                return;
+            }
+
+            btn.disabled = true;
+            const { error } = await supabaseClient.auth.updateUser({ email: newEmail });
+            btn.disabled = false;
+
+            if (error) {
+                statusEl.className = 'save-status error';
+                statusEl.textContent = 'Could not update email: ' + error.message;
+                return;
+            }
+
+            statusEl.className = 'save-status success';
+            statusEl.textContent = 'Check your inbox (old and new address) to confirm this change. Your email stays the same until confirmed.';
+            document.getElementById('newEmail').value = '';
+        });
+
+        // ==========================================
+        // DELETE — full account deletion. Requires the
+        // 'delete-account' Edge Function to be deployed, since
+        // deleting the auth user and bypassing RLS across
+        // tables needs the service role key, which must never
+        // live in client-side JS.
+        // ==========================================
+        document.getElementById('deleteConfirmInput').addEventListener('input', (e) => {
+            document.getElementById('deleteAccountBtn').disabled = e.target.value.trim() !== 'DELETE';
+        });
+
+        document.getElementById('deleteAccountBtn').addEventListener('click', async () => {
+            const statusEl = document.getElementById('deleteStatus');
+            const btn = document.getElementById('deleteAccountBtn');
+
+            const ok = await showConfirm('This permanently deletes your account and everything tied to it. This cannot be undone. Continue?', { danger: true, confirmLabel: 'Delete Account' });
+            if (!ok) return;
+
+            btn.disabled = true;
+            statusEl.className = 'save-status';
+            statusEl.textContent = 'Deleting your account...';
+
+            const { data: { session } } = await supabaseClient.auth.getSession();
+
+            const { data, error } = await supabaseClient.functions.invoke('delete-account', {
+                headers: { Authorization: `Bearer ${session.access_token}` }
+            });
+
+            if (error) {
+                statusEl.className = 'save-status error';
+                statusEl.textContent = 'Could not delete account: ' + error.message;
+                btn.disabled = false;
+                return;
+            }
+
+            await supabaseClient.auth.signOut();
+            showToast('Your account has been deleted.', 'success', 4000);
+            setTimeout(() => { window.location.href = 'Dashboard.html'; }, 2000);
+        });
+
+        // ==========================================
+        // INITIALIZE PAGE
+        // ==========================================
+        guardAndInit();
+    </script>
+</body>
+</html>

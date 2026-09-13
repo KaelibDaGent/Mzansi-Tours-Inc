@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Business | Mzansi Tours Inc</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Styles/general.css">
+
+  <style>
+    .biz-wrap { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem; }
+    .biz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .biz-header h1 { font-size: 1.8rem; font-weight: 800; }
+
+    /* Profile dropdown — matches Dashboard.html's tourist-side pattern */
+    .profile-container { position: relative; }
+    .avatar-btn {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--sa-gold), var(--sa-green));
+      color: white; font-weight: 700; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; font-size: 0.95rem;
+    }
+    .avatar-btn img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-dropdown {
+      position: absolute; top: calc(100% + 0.6rem); right: 0;
+      background: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 10px; box-shadow: var(--shadow-lg);
+      min-width: 220px; overflow: hidden;
+      opacity: 0; visibility: hidden; transform: translateY(-8px);
+      transition: var(--transition); z-index: 50;
+    }
+    .profile-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown-header { padding: 0.9rem 1rem; border-bottom: 1px solid var(--border-color); }
+    .dropdown-email { font-size: 0.82rem; color: var(--text-muted); word-break: break-all; }
+    .dropdown-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.8rem 1rem; width: 100%; background: none; border: none;
+      color: var(--text-primary); font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; text-decoration: none; transition: var(--transition);
+    }
+    .dropdown-item:hover { background: var(--bg-main); }
+
+    .post-form { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 2rem; box-shadow: var(--shadow-sm); }
+    .post-form h2 { margin-bottom: 1rem; font-size: 1.2rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+    .form-group label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
+    .form-group input, .form-group textarea, .form-group select {
+      padding: 0.6rem 0.8rem; border-radius: 8px; border: 1px solid var(--border-color);
+      background: var(--bg-main); color: var(--text-primary); font-family: inherit; font-size: 0.9rem;
+    }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .btn-submit-post { background: var(--sa-green); color: white; padding: 0.7rem 1.5rem; border-radius: 8px; font-weight: 700; }
+    .btn-submit-post:hover { background: var(--sa-green-hover); }
+    .btn-submit-post:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-cancel-edit { background: var(--bg-main); color: var(--text-primary); padding: 0.7rem 1.5rem; border-radius: 8px; font-weight: 600; border: 1px solid var(--border-color); margin-left: 0.5rem; }
+
+    .posts-list { display: flex; flex-direction: column; gap: 1rem; }
+    .post-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; display: flex; gap: 1rem; }
+    .post-card img { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+    .post-card-body { flex: 1; }
+    .post-card-title { font-weight: 700; margin-bottom: 0.3rem; }
+    .post-card-meta { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .status-badge { display: inline-block; padding: 0.2rem 0.7rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-approved { background: #d1fae5; color: #065f46; }
+    .status-rejected { background: #fee2e2; color: #991b1b; }
+    .admin-note { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; font-style: italic; }
+    .post-card-actions { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+    .post-card-actions button { font-size: 0.8rem; padding: 0.3rem 0.7rem; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-main); cursor: pointer; }
+    .post-card-actions button:hover { background: var(--bg-card); }
+    .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+  <div class="biz-wrap">
+    <div class="biz-header">
+      <h1>My Business Posts</h1>
+
+      <div class="profile-container">
+        <button class="avatar-btn" id="avatarBtn">
+          <span id="avatarContent">B</span>
+        </button>
+        <div class="profile-dropdown" id="profileDropdown">
+          <div class="dropdown-header">
+            <p class="dropdown-email" id="dropdownEmail">user@example.com</p>
+          </div>
+          <a href="user.html" class="dropdown-item"><i class="fa-solid fa-user"></i> Account</a>
+          <button class="dropdown-item" id="dropdownLogout"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="post-form">
+      <h2 id="formTitle">Create a New Post</h2>
+      <form id="postForm">
+        <input type="hidden" id="p_editingId" value="">
+
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" id="p_title" required placeholder="e.g. Sunset Boat Cruise">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Province</label>
+            <select id="p_province" required>
+              <option value="">Select province</option>
+              <option>Western Cape</option>
+              <option>Gauteng</option>
+              <option>KwaZulu-Natal</option>
+              <option>Eastern Cape</option>
+              <option>Free State</option>
+              <option>Mpumalanga</option>
+              <option>Limpopo</option>
+              <option>North West</option>
+              <option>Northern Cape</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <input type="text" id="p_category" placeholder="e.g. Adventure, Food Markets">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date / Availability</label>
+            <input type="text" id="p_date" placeholder="e.g. Daily Open, 12 Dec 2026">
+          </div>
+          <div class="form-group">
+            <label>Price</label>
+            <input type="text" id="p_price" placeholder="e.g. R350 or Free">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="p_description" required placeholder="Describe your event or business..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Image URL</label>
+          <input type="url" id="p_image" placeholder="https://...">
+        </div>
+
+        <button type="submit" class="btn-submit-post" id="submitPostBtn">Submit for Approval</button>
+        <button type="button" class="btn-cancel-edit" id="cancelEditBtn" style="display: none;">Cancel Edit</button>
+      </form>
+    </div>
+
+    <h2 style="margin-bottom: 1rem;">Your Posts</h2>
+    <div class="posts-list" id="postsList">
+      <div class="empty-state">Loading your posts...</div>
+    </div>
+    <h2 style="margin: 2.5rem 0 1rem;">Reports</h2>
+<div class="post-form" style="margin-bottom: 1.5rem;">
+  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem;">
+    <p style="color:var(--text-muted); font-size:0.85rem;">Stats across your approved and pending listings.</p>
+    <button type="button" class="btn-submit-post" id="downloadCsvBtn">
+      <i class="fa-solid fa-download"></i> Download CSV
+    </button>
+  </div>
+</div>
+
+<div class="posts-list" id="reportTableWrap" style="margin-bottom: 2rem;">
+  <div class="empty-state">Loading report...</div>
+</div>
+
+<h3 style="margin-bottom: 0.75rem; font-size: 1rem;">Itinerary Adds by Month</h3>
+<div class="post-form" id="trendWrap">
+  <div class="empty-state">Loading trend...</div>
+</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="Scripts/notify.js"></script>
+  <script src="Scripts/supabaseClient.js"></script>
+  <script>
+    let currentUser = null;
+let myPosts = [];
+let reportRows = [];
+
+async function guardAndInit() {
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  if (!user) { window.location.href = 'login.html'; return; }
+
+  const { data: profile, error } = await supabaseClient
+    .from('profiles').select('role, email, full_name, avatar_url').eq('id', user.id).single();
+
+  if (error || !profile) { window.location.href = 'login.html'; return; }
+
+  // Role values match the Postgres enum exactly: tourist / business / admin
+  if (profile.role !== 'business_owner') {
+    window.location.href = profile.role === 'admin' ? 'admin.html' : 'Dashboard.html';
+    return;
+  }
+
+  currentUser = user;
+  setupProfileDropdown(profile);
+  loadMyPosts();
+  loadReports();
+}
+
+function setupProfileDropdown(profile) {
+  const dropdownEmail = document.getElementById('dropdownEmail');
+  const avatarContent = document.getElementById('avatarContent');
+  const avatarBtn = document.getElementById('avatarBtn');
+  const profileDropdown = document.getElementById('profileDropdown');
+
+  dropdownEmail.textContent = profile.email || currentUser.email;
+
+  if (profile.avatar_url) {
+    avatarContent.innerHTML = `<img src="${profile.avatar_url}" alt="Profile">`;
+  } else {
+    const source = profile.full_name || profile.email || currentUser.email || '?';
+    avatarContent.textContent = source.substring(0, 2).toUpperCase();
+  }
+
+  avatarBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    profileDropdown.classList.toggle('active');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!avatarBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+      profileDropdown.classList.remove('active');
+    }
+  });
+}
+
+document.getElementById('dropdownLogout').addEventListener('click', async () => {
+  await supabaseClient.auth.signOut();
+  window.location.href = 'login.html';
+});
+
+// CREATE / UPDATE (same form, toggled by editingId)
+document.getElementById('postForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('submitPostBtn');
+  const editingId = document.getElementById('p_editingId').value;
+
+  const payload = {
+    title: document.getElementById('p_title').value,
+    description: document.getElementById('p_description').value,
+    province: document.getElementById('p_province').value,
+    category: document.getElementById('p_category').value || null,
+    date_text: document.getElementById('p_date').value || null,
+    price: document.getElementById('p_price').value || null,
+    image_url: document.getElementById('p_image').value || null
+  };
+
+  btn.disabled = true;
+
+  if (editingId) {
+    // Edits reset the post to pending for re-approval
+    btn.textContent = 'Saving...';
+    payload.status = 'pending';
+    payload.admin_notes = null;
+    payload.reviewed_at = null;
+
+    const { error } = await supabaseClient
+      .from('business_posts')
+      .update(payload)
+      .eq('id', editingId)
+      .eq('owner_id', currentUser.id);
+
+    btn.disabled = false;
+    btn.textContent = 'Submit for Approval';
+
+    if (error) {
+      showToast('Error updating post: ' + error.message, 'error');
+      return;
+    }
+
+    showToast('Post updated — it will be re-reviewed by an admin before it\'s public again.', 'success');
+    exitEditMode();
+  } else {
+    btn.textContent = 'Submitting...';
+    payload.owner_id = currentUser.id;
+    payload.status = 'pending';
+
+    const { error } = await supabaseClient.from('business_posts').insert(payload);
+
+    btn.disabled = false;
+    btn.textContent = 'Submit for Approval';
+
+    if (error) {
+      showToast('Error creating post: ' + error.message, 'error');
+      return;
+    }
+
+    showToast('Post submitted for approval!', 'success');
+  }
+
+  e.target.reset();
+  loadMyPosts();
+  loadReports();
+});
+
+function enterEditMode(post) {
+  document.getElementById('formTitle').textContent = 'Edit Post';
+  document.getElementById('p_editingId').value = post.id;
+  document.getElementById('p_title').value = post.title || '';
+  document.getElementById('p_province').value = post.province || '';
+  document.getElementById('p_category').value = post.category || '';
+  document.getElementById('p_date').value = post.date_text || '';
+  document.getElementById('p_price').value = post.price || '';
+  document.getElementById('p_description').value = post.description || '';
+  document.getElementById('p_image').value = post.image_url || '';
+
+  document.getElementById('submitPostBtn').textContent = 'Save Changes';
+  document.getElementById('cancelEditBtn').style.display = 'inline-block';
+
+  document.querySelector('.post-form').scrollIntoView({ behavior: 'smooth' });
+}
+
+function exitEditMode() {
+  document.getElementById('formTitle').textContent = 'Create a New Post';
+  document.getElementById('p_editingId').value = '';
+  document.getElementById('submitPostBtn').textContent = 'Submit for Approval';
+  document.getElementById('cancelEditBtn').style.display = 'none';
+  document.getElementById('postForm').reset();
+}
+
+document.getElementById('cancelEditBtn').addEventListener('click', exitEditMode);
+
+// READ
+async function loadMyPosts() {
+  const listEl = document.getElementById('postsList');
+  const { data: posts, error } = await supabaseClient
+    .from('business_posts')
+    .select('*')
+    .eq('owner_id', currentUser.id)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    listEl.innerHTML = `<div class="empty-state">Error loading posts: ${error.message}</div>`;
+    return;
+  }
+
+  myPosts = posts || [];
+
+  if (!myPosts.length) {
+    listEl.innerHTML = `<div class="empty-state">You haven't submitted any posts yet.</div>`;
+    return;
+  }
+
+  listEl.innerHTML = myPosts.map(p => `
+    <div class="post-card">
+      ${p.image_url ? `<img src="${p.image_url}" alt="${p.title}">` : ''}
+      <div class="post-card-body">
+        <div class="post-card-title">${p.title}</div>
+        <div class="post-card-meta">${p.province} • ${p.category || 'Uncategorized'}</div>
+        <span class="status-badge status-${p.status}">${p.status}</span>
+        ${p.status === 'rejected' && p.admin_notes ? `<div class="admin-note">Admin note: ${p.admin_notes}</div>` : ''}
+        <div class="post-card-actions">
+          <button onclick='editPost("${p.id}")'><i class="fa-solid fa-pen"></i> Edit</button>
+          <button onclick="deletePost('${p.id}')"><i class="fa-regular fa-trash-can"></i> Delete</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function editPost(id) {
+  const post = myPosts.find(p => p.id === id);
+  if (post) enterEditMode(post);
+}
+
+// DELETE — allowed on any status
+async function deletePost(id) {
+  const ok = await showConfirm('Delete this post? This cannot be undone.', { danger: true, confirmLabel: 'Delete' });
+  if (!ok) return;
+
+  const { error } = await supabaseClient.from('business_posts').delete().eq('id', id);
+  if (error) {
+    showToast('Error deleting: ' + error.message, 'error');
+    return;
+  }
+  if (document.getElementById('p_editingId').value === id) exitEditMode();
+  showToast('Post deleted.', 'success');
+  loadMyPosts();
+  loadReports();
+}
+
+// REPORTS
+async function loadReports() {
+  const tableWrap = document.getElementById('reportTableWrap');
+  const trendWrap = document.getElementById('trendWrap');
+
+  const { data: posts, error: postsErr } = await supabaseClient
+    .from('business_posts')
+    .select('id, title, status')
+    .eq('owner_id', currentUser.id);
+
+  if (postsErr || !posts || !posts.length) {
+    tableWrap.innerHTML = `<div class="empty-state">No listings to report on yet.</div>`;
+    trendWrap.innerHTML = `<div class="empty-state">No data yet.</div>`;
+    return;
+  }
+
+  const postIds = posts.map(p => p.id);
+
+  const { data: itineraryRows } = await supabaseClient
+    .from('itineraries')
+    .select('event_id, added_at')
+    .in('event_id', postIds);
+
+  const { data: reviewRows } = await supabaseClient
+    .from('reviews')
+    .select('event_id, rating')
+    .in('event_id', postIds)
+    .eq('status', 'approved');
+
+  reportRows = posts.map(post => {
+    const adds = (itineraryRows || []).filter(r => r.event_id === post.id);
+    const reviews = (reviewRows || []).filter(r => r.event_id === post.id);
+    const avgRating = reviews.length
+      ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+      : '—';
+
+    return {
+      title: post.title,
+      status: post.status,
+      itineraryAdds: adds.length,
+      reviewCount: reviews.length,
+      avgRating
+    };
+  });
+
+  tableWrap.innerHTML = `
+    <table class="report-table">
+      <thead>
+        <tr><th>Listing</th><th>Status</th><th>Itinerary Adds</th><th>Reviews</th><th>Avg Rating</th></tr>
+      </thead>
+      <tbody>
+        ${reportRows.map(r => `
+          <tr>
+            <td>${r.title}</td>
+            <td><span class="status-badge status-${r.status}">${r.status}</span></td>
+            <td>${r.itineraryAdds}</td>
+            <td>${r.reviewCount}</td>
+            <td>${r.avgRating}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+
+  const monthCounts = {};
+  (itineraryRows || []).forEach(row => {
+    const d = new Date(row.added_at);
+    const key = d.toLocaleDateString('en-ZA', { year: 'numeric', month: 'short' });
+    monthCounts[key] = (monthCounts[key] || 0) + 1;
+  });
+
+  const months = Object.keys(monthCounts).sort((a, b) => new Date(a) - new Date(b));
+  const maxCount = Math.max(1, ...Object.values(monthCounts));
+
+  if (!months.length) {
+    trendWrap.innerHTML = `<div class="empty-state">No itinerary adds recorded yet.</div>`;
+  } else {
+    trendWrap.innerHTML = months.map(m => `
+      <div class="trend-bar-row">
+        <span class="trend-bar-label">${m}</span>
+        <div class="trend-bar-track">
+          <div class="trend-bar-fill" style="width: ${(monthCounts[m] / maxCount) * 100}%;"></div>
+        </div>
+        <span class="trend-bar-count">${monthCounts[m]}</span>
+      </div>
+    `).join('');
+  }
+}
+
+function downloadReportCsv() {
+  if (!reportRows.length) {
+    showToast('No data to export yet.', 'info');
+    return;
+  }
+
+  const headers = ['Listing', 'Status', 'Itinerary Adds', 'Reviews', 'Avg Rating'];
+  const rows = reportRows.map(r => [r.title, r.status, r.itineraryAdds, r.reviewCount, r.avgRating]);
+
+  const csvContent = [headers, ...rows]
+    .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+    .join('\n');
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `business-report-${new Date().toISOString().split('T')[0]}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById('downloadCsvBtn').addEventListener('click', downloadReportCsv);
+
+guardAndInit();
+  </script>
+</body>
+</html>

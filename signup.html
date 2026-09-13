@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Mzansi Tours Inc</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Styles/general.css">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(135deg, rgba(0, 34, 68, 0.92) 0%, rgba(0, 122, 61, 0.88) 100%),
+                url('https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat fixed;
+            padding: 2rem 1rem;
+        }
+
+        .auth-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+            max-width: 460px;
+            width: 100%;
+            padding: 2.5rem;
+        }
+
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-logo i {
+            color: var(--sa-gold);
+            font-size: 1.8rem;
+        }
+
+        .auth-logo span {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            margin-left: 0.5rem;
+        }
+
+        .auth-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.7rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 0.3rem;
+            color: var(--text-primary);
+        }
+
+        .auth-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .form-row-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-main);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--sa-gold);
+            box-shadow: 0 0 0 3px rgba(234, 170, 0, 0.15);
+        }
+
+        .form-group input.field-error {
+            border-color: #ef4444;
+        }
+
+        .field-error-msg {
+            font-size: 0.8rem;
+            color: #ef4444;
+            font-weight: 600;
+            margin-top: 0.35rem;
+            display: none;
+        }
+
+        .field-error-msg.visible {
+            display: block;
+        }
+
+        .role-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .role-option {
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.8rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .role-option input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .role-option i {
+            display: block;
+            font-size: 1.3rem;
+            margin-bottom: 0.4rem;
+            color: var(--text-muted);
+        }
+
+        .role-option.selected {
+            border-color: var(--sa-green);
+            background: rgba(0, 122, 61, 0.08);
+        }
+
+        .role-option.selected i {
+            color: var(--sa-green);
+        }
+
+        .business-field {
+            display: none;
+            overflow: hidden;
+        }
+
+        .business-field.visible {
+            display: block;
+        }
+
+        .btn-submit-auth {
+            width: 100%;
+            background: linear-gradient(135deg, var(--sa-green), var(--sa-green-hover));
+            color: white;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 0.5rem;
+        }
+
+        .btn-submit-auth:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 122, 61, 0.35);
+        }
+
+        .btn-submit-auth:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .auth-footer-link {
+            text-align: center;
+            margin-top: 1.3rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .auth-footer-link a {
+            color: var(--sa-green);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .form-status {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .form-status.error {
+            display: block;
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .form-status.success {
+            display: block;
+            background: rgba(0, 122, 61, 0.1);
+            color: var(--sa-green);
+        }
+
+        @media (max-width: 480px) {
+            .form-row-split, .role-options { grid-template-columns: 1fr; }
+            .auth-card { padding: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <div class="auth-logo"><i class="fa-solid fa-compass"></i><span>Mzansi Tours</span></div>
+        <h1 class="auth-title">Create Your Account</h1>
+        <p class="auth-subtitle">Join the community exploring South Africa</p>
+
+        <form id="registerForm" novalidate>
+            <div class="form-row-split">
+                <div class="form-group">
+                    <label for="nameInput">Name</label>
+                    <input type="text" id="nameInput" class="name_input_00" required>
+                    <div class="field-error-msg" id="nameError">Please enter your name.</div>
+                </div>
+                <div class="form-group">
+                    <label for="surnameInput">Surname</label>
+                    <input type="text" id="surnameInput" class="surname_input_00" required>
+                    <div class="field-error-msg" id="surnameError">Please enter your surname.</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Account Type</label>
+                <div class="role-options">
+                    <label class="role-option selected" id="roleTouristOption">
+                        <input type="radio" name="user_role" value="tourist" checked>
+                        <i class="fa-solid fa-suitcase-rolling"></i> Tourist
+                    </label>
+                    <label class="role-option" id="roleBusinessOption">
+                        <input type="radio" name="user_role" value="business_owner">
+                        <i class="fa-solid fa-store"></i> Business Owner
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group business-field" id="businessNameGroup">
+                <label for="businessNameInput">Business Name</label>
+                <input type="text" id="businessNameInput" placeholder="e.g. Safari Adventures SA">
+                <div class="field-error-msg" id="businessNameError">Please enter your business name.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="emailInput">Email</label>
+                <input type="email" id="emailInput" required>
+                <div class="field-error-msg" id="emailError">Enter a valid email address.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="passwordInput">Password</label>
+                <input type="password" id="passwordInput" required minlength="6">
+                <div class="field-error-msg" id="passwordError">Password must be at least 6 characters.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPasswordInput">Confirm Password</label>
+                <input type="password" id="confirmPasswordInput" required>
+                <div class="field-error-msg" id="confirmPasswordError">Passwords don't match.</div>
+            </div>
+
+            <button type="submit" class="btn-submit-auth" id="submitBtn">Create Account</button>
+            <div class="form-status" id="formStatus"></div>
+        </form>
+
+        <p class="auth-footer-link">Already have an account? <a href="login.html">Log in</a></p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="Scripts/supabaseClient.js"></script>
+    <script src="Scripts/notify.js"></script>
+    <script src="Scripts/register.js"></script>
+</body>
+</html>

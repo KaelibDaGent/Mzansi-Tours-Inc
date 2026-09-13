@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Reviews | Mzansi Tours Inc</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Styles/reviews.css">
+    <link rel="stylesheet" href="Styles/general.css">
+    <style>
+        /* ==========================================
+           REVIEWS PAGE - IMPROVED VISIBILITY
+           ========================================== */
+        
+        body {
+            background-color: var(--bg-main);
+        }
+
+        /* Hero Banner - Lighter & More Visible */
+        .reviews-hero {
+            background: 
+                linear-gradient(135deg, rgba(0, 34, 68, 0.70) 0%, rgba(0, 122, 61, 0.65) 100%),
+                url('https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            color: white;
+            padding: 4rem 1.5rem 6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reviews-hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                repeating-linear-gradient(45deg, 
+                    transparent, 
+                    transparent 20px, 
+                    rgba(234, 170, 0, 0.08) 20px, 
+                    rgba(234, 170, 0, 0.08) 40px);
+            pointer-events: none;
+        }
+
+        .reviews-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 0; right: 0;
+            height: 60px;
+            background: var(--bg-main);
+            clip-path: polygon(0 100%, 100% 100%, 100% 0, 50% 100%, 0 0);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-eyebrow {
+            display: inline-block;
+            background: rgba(234, 170, 0, 0.25);
+            color: #FFD700;
+            padding: 0.5rem 1.3rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            border: 2px solid rgba(234, 170, 0, 0.5);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            text-shadow: 0 3px 15px rgba(0,0,0,0.4);
+            color: white;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 1;
+            margin-bottom: 2rem;
+            color: white;
+            font-weight: 500;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .btn-post-review {
+            background: var(--sa-gold);
+            color: var(--sa-blue);
+            padding: 1rem 2.2rem;
+            border-radius: 50px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: var(--transition);
+            box-shadow: 0 6px 20px rgba(234, 170, 0, 0.5);
+            font-size: 1.05rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .btn-post-review:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(234, 170, 0, 0.6);
+            background: var(--sa-gold-hover);
+        }
+
+        /* Back Button Styles */
+.hero-buttons-wrap {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.btn-back-reviews {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: var(--transition);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-back-reviews:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn-back-reviews i {
+    transition: transform 0.3s;
+}
+
+.btn-back-reviews:hover i {
+    transform: translateX(-3px);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .hero-buttons-wrap {
+        flex-direction: column;
+        align-items: center;
+    }
+    .btn-post-review,
+    .btn-back-reviews {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+}
+
+        /* Main Container */
+        .reviews-container {
+            max-width: 900px;
+            margin: -3rem auto 2rem;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Filter & Sort Bar - More Visible */
+        .reviews-toolbar {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .filter-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--sa-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-select {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: white;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-select:hover {
+            border-color: var(--sa-green);
+        }
+
+        .review-count {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .review-count strong {
+            color: var(--sa-green);
+            font-size: 1.3rem;
+        }
+
+        /* Reddit-Style Review Cards - Better Visibility */
+        .reviews-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .review-card {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            display: flex;
+            gap: 1.2rem;
+            transition: var(--transition);
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .review-card:hover {
+            border-color: var(--sa-green);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Vote Sidebar */
+        .vote-sidebar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            min-width: 55px;
+            background: var(--bg-main);
+            padding: 0.8rem;
+            border-radius: 10px;
+        }
+
+        .vote-btn {
+            background: white;
+            border: 2px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0.4rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vote-btn:hover {
+            background: var(--sa-green);
+            color: white;
+            border-color: var(--sa-green);
+        }
+
+        .vote-btn.upvoted {
+            color: var(--sa-green);
+            background: rgba(0, 122, 61, 0.1);
+            border-color: var(--sa-green);
+        }
+
+        .vote-btn.downvoted {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+        }
+
+        .vote-count {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            background: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            min-width: 40px;
+        }
+
+        /* Review Content */
+        .review-content {
+            flex: 1;
+        }
+
+        .review-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.85rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+            font-weight: 600;
+        }
+
+        .review-author {
+            font-weight: 800;
+            color: var(--sa-blue);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .review-author-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--sa-green), var(--sa-gold));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 800;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .review-province-badge {
+            background: var(--sa-blue);
+            color: white;
+            padding: 0.25rem 0.7rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .review-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: var(--sa-gold);
+            font-size: 1.1rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .review-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 0.6rem;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .review-body {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text-primary);
+            margin-bottom: 1.2rem;
+            font-weight: 500;
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .action-btn {
+            background: var(--bg-main);
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            font-weight: 700;
+        }
+
+        .action-btn:hover {
+            background: var(--sa-green);
+            color: white;
+            border-color: var(--sa-green);
+        }
+
+        .action-btn.delete-btn:hover {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+
+        /* Empty State */
+        .empty-reviews {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border: 3px dashed var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .empty-icon-wrap {
+            width: 110px;
+            height: 110px;
+            background: linear-gradient(135deg, var(--sa-gold), var(--sa-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(234, 170, 0, 0.4);
+        }
+
+        .empty-icon-wrap i {
+            font-size: 3rem;
+            color: white;
+        }
+
+        .empty-reviews h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.9rem;
+            margin-bottom: 0.6rem;
+            color: var(--text-primary);
+        }
+
+        .empty-reviews p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+
+        /* Modal for Posting Review */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 1rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            background: var(--bg-main);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-primary);
+        }
+
+        .modal-close:hover {
+            background: #ef4444;
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .modal-subtitle {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 0.6rem;
+            color: var(--text-primary);
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 0.85rem 1.1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            background: white;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--sa-green);
+            box-shadow: 0 0 0 4px rgba(0, 122, 61, 0.15);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 130px;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 0.6rem;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .star-rating i {
+            color: #d1d5db;
+            transition: var(--transition);
+        }
+
+        .star-rating i.active {
+            color: var(--sa-gold);
+            text-shadow: 0 2px 4px rgba(234, 170, 0, 0.4);
+        }
+
+        .star-rating i:hover {
+            transform: scale(1.2);
+        }
+
+        .btn-submit-review {
+            width: 100%;
+            background: linear-gradient(135deg, var(--sa-green), var(--sa-green-hover));
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 122, 61, 0.3);
+        }
+
+        .btn-submit-review:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 122, 61, 0.4);
+        }
+
+        /* Footer */
+        .reviews-footer {
+            background: var(--sa-blue);
+            color: white;
+            padding: 2rem 1.5rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        .footer-tagline {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--sa-gold);
+        }
+
+        .footer-sub {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            .reviews-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .review-card {
+                flex-direction: column;
+            }
+            .vote-sidebar {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Banner -->
+    <section class="reviews-hero">
+        <div class="hero-content">
+            <span class="hero-eyebrow"><i class="fa-solid fa-comments"></i> Community Voices</span>
+            <h1 class="hero-title">Share Your Mzansi Experience</h1>
+            <p class="hero-subtitle">Real stories from real travelers. Help others discover South Africa's hidden gems.</p>
+            <div class="hero-buttons-wrap">
+            <button class="btn-post-review" onclick="openReviewModal()">
+                <i class="fa-solid fa-pen-to-square"></i> Post a Review
+            </button>
+            <a href="Dashboard.html" class="btn-back-reviews">
+                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="reviews-container">
+        
+        <!-- Toolbar -->
+        <div class="reviews-toolbar">
+            <div class="filter-group">
+                <span class="filter-label">Filter by:</span>
+                <select class="filter-select" id="provinceFilter">
+                    <option value="all">All Provinces</option>
+                    <option value="Western Cape">Western Cape</option>
+                    <option value="Eastern Cape">Eastern Cape</option>
+                    <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                    <option value="Gauteng">Gauteng</option>
+                    <option value="Free State">Free State</option>
+                    <option value="North West">North West</option>
+                    <option value="Limpopo">Limpopo</option>
+                    <option value="Mpumalanga">Mpumalanga</option>
+                    <option value="Northern Cape">Northern Cape</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Sort by:</span>
+                <select class="filter-select" id="sortFilter">
+                    <option value="newest">Newest First</option>
+                    <option value="top">Most Upvoted</option>
+                    <option value="rating">Highest Rated</option>
+                </select>
+            </div>
+            <div class="review-count">
+                <strong id="reviewCount">0</strong> Reviews
+            </div>
+        </div>
+
+        <!-- Reviews Feed -->
+        <div class="reviews-feed" id="reviewsFeed">
+            <p style="text-align: center; color: var(--text-muted); padding: 2rem;">Loading reviews...</p>
+        </div>
+    </div>
+
+    <!-- Post Review Modal -->
+    <div class="modal-overlay" id="reviewModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeReviewModal()">&times;</button>
+            <h2 class="modal-title">Share Your Experience</h2>
+            <p class="modal-subtitle">Help fellow travelers discover amazing places in South Africa</p>
+            
+            <form id="reviewForm">
+                <div class="form-group">
+                    <label class="form-label">Your Review Title</label>
+                    <input type="text" class="form-input" id="reviewTitle" placeholder="e.g., Unforgettable sunset at Table Mountain!" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Province</label>
+                    <select class="form-select" id="reviewProvince" required>
+                        <option value="">Select a province...</option>
+                        <option value="Western Cape">Western Cape</option>
+                        <option value="Eastern Cape">Eastern Cape</option>
+                        <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                        <option value="Gauteng">Gauteng</option>
+                        <option value="Free State">Free State</option>
+                        <option value="North West">North West</option>
+                        <option value="Limpopo">Limpopo</option>
+                        <option value="Mpumalanga">Mpumalanga</option>
+                        <option value="Northern Cape">Northern Cape</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Your Rating</label>
+                    <div class="star-rating" id="starRating">
+                        <i class="fa-solid fa-star" data-rating="1"></i>
+                        <i class="fa-solid fa-star" data-rating="2"></i>
+                        <i class="fa-solid fa-star" data-rating="3"></i>
+                        <i class="fa-solid fa-star" data-rating="4"></i>
+                        <i class="fa-solid fa-star" data-rating="5"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Your Review</label>
+                    <textarea class="form-textarea" id="reviewBody" placeholder="Tell us about your experience... What did you love? What should others know?" required></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit-review">
+                    <i class="fa-solid fa-paper-plane"></i> Post Review
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="reviews-footer">
+        <p class="footer-tagline"><i class="fa-solid fa-compass"></i> Mzansi Tours Inc</p>
+        <p class="footer-sub">Connecting you to South Africa's best kept secrets.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="Scripts/notify.js"></script>
+    <script src="Scripts/supabaseClient.js"></script>
+    <script>
+        let selectedRating = 0;
+let currentUser = null;
+
+const urlParams = new URLSearchParams(window.location.search);
+const linkedEventId = urlParams.get('event_id');
+const linkedTitle = urlParams.get('title');
+const linkedProvince = urlParams.get('province');
+
+async function init() {
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  currentUser = user;
+  await loadReviews();
+  if (linkedEventId) openReviewModal();
+}
+
+// Star rating
+document.getElementById('starRating').addEventListener('click', (e) => {
+  if (e.target.tagName === 'I') {
+    selectedRating = parseInt(e.target.dataset.rating);
+    updateStarDisplay();
+  }
+});
+
+function updateStarDisplay() {
+  const stars = document.querySelectorAll('#starRating i');
+  stars.forEach((star, index) => {
+    star.classList.toggle('active', index < selectedRating);
+  });
+}
+
+function openReviewModal() {
+  if (!currentUser) {
+    showToast('Please log in to post a review.', 'info');
+    window.location.href = 'login.html';
+    return;
+  }
+
+  const subtitleEl = document.querySelector('.modal-subtitle');
+  if (linkedEventId && linkedTitle) {
+    subtitleEl.textContent = `Reviewing: ${linkedTitle}`;
+    document.getElementById('reviewProvince').value = linkedProvince || '';
+    document.getElementById('reviewProvince').disabled = true;
+  } else {
+    subtitleEl.textContent = 'Help fellow travelers discover amazing places in South Africa';
+    document.getElementById('reviewProvince').disabled = false;
+  }
+
+  document.getElementById('reviewModal').classList.add('active');
+}
+
+function closeReviewModal() {
+  document.getElementById('reviewModal').classList.remove('active');
+  document.getElementById('reviewForm').reset();
+  selectedRating = 0;
+  updateStarDisplay();
+}
+
+document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  if (selectedRating === 0) {
+    showToast('Please select a rating!', 'error');
+    return;
+  }
+
+  const submitBtn = e.target.querySelector('.btn-submit-review');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Submitting...';
+
+  const { error } = await supabaseClient.from('reviews').insert({
+    user_id: currentUser.id,
+    event_id: linkedEventId || null,
+    title: document.getElementById('reviewTitle').value,
+    province: linkedEventId ? linkedProvince : document.getElementById('reviewProvince').value,
+    rating: selectedRating,
+    body: document.getElementById('reviewBody').value,
+    status: 'pending'
+  });
+
+  submitBtn.disabled = false;
+  submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Post Review';
+
+  if (error) {
+    showToast('Error posting review: ' + error.message, 'error');
+    return;
+  }
+
+  closeReviewModal();
+  loadReviews();
+  showToast('Thanks! Your review has been submitted and will appear once approved by our team.', 'success', 5000);
+});
+
+async function vote(reviewId, direction) {
+  if (!currentUser) {
+    showToast('Please log in to vote.', 'info');
+    return;
+  }
+
+  const voteType = direction === 1 ? 'up' : 'down';
+
+  const { data: existing } = await supabaseClient
+    .from('review_votes')
+    .select('*')
+    .eq('review_id', reviewId)
+    .eq('user_id', currentUser.id)
+    .maybeSingle();
+
+  if (existing && existing.vote_type === voteType) {
+    await supabaseClient.from('review_votes').delete().eq('id', existing.id);
+  } else if (existing) {
+    await supabaseClient.from('review_votes').update({ vote_type: voteType }).eq('id', existing.id);
+  } else {
+    await supabaseClient.from('review_votes').insert({
+      review_id: reviewId,
+      user_id: currentUser.id,
+      vote_type: voteType
+    });
+  }
+
+  loadReviews();
+}
+
+async function deleteReview(reviewId) {
+  const ok = await showConfirm('Are you sure you want to delete this review?', { danger: true, confirmLabel: 'Delete' });
+  if (!ok) return;
+
+  const { error } = await supabaseClient.from('reviews').delete().eq('id', reviewId);
+  if (error) {
+    showToast('Error deleting: ' + error.message, 'error');
+    return;
+  }
+  showToast('Review deleted.', 'success');
+  loadReviews();
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now - date;
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+
+  if (diffMins < 1) return 'Just now';
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  if (diffDays < 7) return `${diffDays}d ago`;
+  return date.toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function getInitials(name) {
+  if (!name) return 'AT';
+  const parts = name.trim().split(' ');
+  return parts.length > 1
+    ? (parts[0][0] + parts[1][0]).toUpperCase()
+    : name.substring(0, 2).toUpperCase();
+}
+
+async function loadReviews() {
+  const feed = document.getElementById('reviewsFeed');
+  const provinceFilter = document.getElementById('provinceFilter').value;
+  const sortFilter = document.getElementById('sortFilter').value;
+
+  let query = supabaseClient
+    .from('reviews')
+    .select('*, profiles(full_name, email), business_posts(title)')
+    .order('created_at', { ascending: false });
+
+  if (provinceFilter !== 'all') {
+    query = query.eq('province', provinceFilter);
+  }
+
+  const { data: reviews, error } = await query;
+
+  if (error) {
+    feed.innerHTML = `<p style="text-align:center;color:var(--text-muted);padding:2rem;">Error loading reviews: ${error.message}</p>`;
+    return;
+  }
+
+  const reviewIds = reviews.map(r => r.id);
+  let votesByReview = {};
+  let myVotes = {};
+
+  if (reviewIds.length) {
+    const { data: votes } = await supabaseClient
+      .from('review_votes')
+      .select('review_id, vote_type, user_id')
+      .in('review_id', reviewIds);
+
+    (votes || []).forEach(v => {
+      votesByReview[v.review_id] = (votesByReview[v.review_id] || 0) + (v.vote_type === 'up' ? 1 : -1);
+      if (currentUser && v.user_id === currentUser.id) {
+        myVotes[v.review_id] = v.vote_type;
+      }
+    });
+  }
+
+  reviews.forEach(r => {
+    r._netVotes = votesByReview[r.id] || 0;
+    r._myVote = myVotes[r.id] || null;
+  });
+
+  if (sortFilter === 'top') {
+    reviews.sort((a, b) => b._netVotes - a._netVotes);
+  } else if (sortFilter === 'rating') {
+    reviews.sort((a, b) => b.rating - a.rating);
+  }
+
+  document.getElementById('reviewCount').textContent = reviews.length;
+
+  if (!reviews.length) {
+    feed.innerHTML = `
+      <div class="empty-reviews">
+        <div class="empty-icon-wrap"><i class="fa-solid fa-comment-dots"></i></div>
+        <h2>No Reviews Yet</h2>
+        <p>Be the first to share your South African adventure! Your story could inspire someone's next trip.</p>
+      </div>
+    `;
+    return;
+  }
+
+  feed.innerHTML = reviews.map(review => {
+    const authorName = review.profiles?.full_name || review.profiles?.email || 'Traveler';
+    const isOwner = currentUser && review.user_id === currentUser.id;
+    const pendingTag = review.status === 'pending' ? ' <span style="color:#92400e;font-size:0.75rem;">(pending approval — only visible to you)</span>' : '';
+    const listingTag = review.business_posts?.title
+      ? `<div style="font-size:0.85rem; color:var(--sa-green); font-weight:700; margin-bottom:0.4rem;"><i class="fa-solid fa-location-dot"></i> Review for: ${review.business_posts.title}</div>`
+      : '';
+
+    return `
+      <div class="review-card">
+        <div class="vote-sidebar">
+          <button class="vote-btn ${review._myVote === 'up' ? 'upvoted' : ''}" onclick="vote('${review.id}', 1)">
+            <i class="fa-solid fa-caret-up"></i>
+          </button>
+          <span class="vote-count">${review._netVotes}</span>
+          <button class="vote-btn ${review._myVote === 'down' ? 'downvoted' : ''}" onclick="vote('${review.id}', -1)">
+            <i class="fa-solid fa-caret-down"></i>
+          </button>
+        </div>
+        <div class="review-content">
+          <div class="review-meta">
+            <span class="review-author">
+              <span class="review-author-avatar">${getInitials(authorName)}</span>
+              ${authorName}
+            </span>
+            <span>•</span>
+            <span>${formatDate(review.created_at)}</span>
+            <span class="review-province-badge">
+              <i class="fa-solid fa-location-dot"></i> ${review.province || ''}
+            </span>
+            <span class="review-rating">
+              ${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}
+            </span>
+            ${pendingTag}
+          </div>
+          ${listingTag}
+          <h3 class="review-title">${review.title}</h3>
+          <p class="review-body">${review.body}</p>
+          <div class="review-actions">
+            <button class="action-btn" onclick="shareReview('${review.id}', \`${review.title.replace(/`/g,"'")}\`, \`${review.body.replace(/`/g,"'")}\`, '${authorName}', '${review.province}', ${review.rating})">
+              <i class="fa-solid fa-share"></i> Share
+            </button>
+            ${isOwner ? `
+              <button class="action-btn delete-btn" onclick="deleteReview('${review.id}')">
+                <i class="fa-regular fa-trash-can"></i> Delete
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function shareReview(id, title, body, author, province, rating) {
+  const shareText = `${title}\n\n${body}\n\n- ${author} (${province})\n\nRating: ${'★'.repeat(rating)}`;
+  if (navigator.share) {
+    navigator.share({ title, text: shareText });
+  } else {
+    navigator.clipboard.writeText(shareText).then(() => {
+      showToast('Review copied to clipboard!', 'success');
+    });
+  }
+}
+
+document.getElementById('provinceFilter').addEventListener('change', loadReviews);
+document.getElementById('sortFilter').addEventListener('change', loadReviews);
+
+document.getElementById('reviewModal').addEventListener('click', (e) => {
+  if (e.target.id === 'reviewModal') closeReviewModal();
+});
+
+init();
+    </script>
+</body>
+</html>
