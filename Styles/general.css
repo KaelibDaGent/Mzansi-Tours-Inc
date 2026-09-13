@@ -1,0 +1,35 @@
+* {
+  font-family: roboto;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+    --sa-green: #007A3D;
+    --sa-green-hover: #005a2d;
+    --sa-blue: #002244;
+    --sa-gold: #EAAA00;
+    --sa-gold-hover: #c89000;
+    --bg-main: #f4f6f8;
+    --bg-card: #ffffff;
+    --bg-header: #ffffff;
+    --text-primary: #1a202c;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.12);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.report-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.report-table th, .report-table td { padding: 0.6rem 0.5rem; text-align: left; border-bottom: 1px solid var(--border-color); }
+.report-table th { color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 0.75rem; }
+.trend-bar-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+.trend-bar-label { width: 90px; font-size: 0.8rem; color: var(--text-muted); flex-shrink: 0; }
+.trend-bar-track { flex: 1; background: var(--bg-main); border-radius: 4px; height: 18px; overflow: hidden; }
+.trend-bar-fill { background: var(--sa-green); height: 100%; border-radius: 4px; }
+.trend-bar-count { width: 30px; text-align: right; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
