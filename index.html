@@ -35,10 +35,7 @@
                 <i class="fa-solid fa-compass"></i> Mzansi Tours <span>Inc</span>
             </a>
 
-            <div class="search-bar-container">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Search events and destinations in South Africa...">
-            </div>
+            
 
             <div class="nav-actions" id="navActions">
                 <!-- Unauthenticated Links -->
@@ -79,13 +76,9 @@
 
     <!-- ================= HERO ================= -->
     <section class="hero">
-        <div class="hero-content">
-            <h1>Discover South Africa’s Best Kept Secrets</h1>
-            <p>From local street markets to untouched hiking trails, explore authentic events and places curated by locals.</p>
-            <div class="hero-search">
-                <input type="text" placeholder="Where do you want to go? (e.g. Drakensberg, Soweto)">
-                <button><i class="fa-solid fa-paper-plane"></i> Search</button>
-            </div>
+        <div class="hero-search">
+            <input type="text" id="searchInput" placeholder="Where do you want to go? (e.g. Drakensberg, Soweto)">
+            <button id="searchBtn"><i class="fa-solid fa-paper-plane"></i> Search</button>
         </div>
     </section>
 
@@ -124,20 +117,14 @@
             <div class="filter-group">
                 <label>Price Range</label>
                 <div class="filter-options">
-                    <label class="filter-checkbox"><input type="checkbox"> Free Events</label>
-                    <label class="filter-checkbox"><input type="checkbox"> Under R200</label>
-                    <label class="filter-checkbox"><input type="checkbox"> R200 - R500</label>
-                    <label class="filter-checkbox"><input type="checkbox"> R500+</label>
+                    <label class="filter-checkbox"><input type="checkbox" class="price-filter" value="free"> Free Events</label>
+                    <label class="filter-checkbox"><input type="checkbox" class="price-filter" value="under200"> Under R200</label>
+                    <label class="filter-checkbox"><input type="checkbox" class="price-filter" value="200to500"> R200 - R500</label>
+                    <label class="filter-checkbox"><input type="checkbox" class="price-filter" value="over500"> R500+</label>
                 </div>
             </div>
 
-            <div class="filter-group">
-                <label>Rating</label>
-                <div class="filter-options">
-                    <label class="filter-checkbox"><input type="checkbox"> ★★★★☆ & Up</label>
-                    <label class="filter-checkbox"><input type="checkbox"> ★★★☆☆ & Up</label>
-                </div>
-            </div>
+            
         </aside>
 
         <!-- CONTENT AREA -->

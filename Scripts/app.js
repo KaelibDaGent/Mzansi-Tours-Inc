@@ -69,6 +69,113 @@ function showTeaserOverlay() {
     });
 }
 
+// ==========================================
+// PRICE FILTERING LOGIC
+// ==========================================
+let selectedPriceRanges = new Set();
+
+// Helper: Parse price string to a number (e.g., "Free" -> 0, "R150" -> 150)
+function parsePrice(priceStr) {
+    if (!priceStr) return 0;
+    const lower = priceStr.toString().toLowerCase();
+    if (lower.includes('free')) return 0;
+    
+    // Extract the first number found (e.g., "R150" -> 150, "R 500" -> 500)
+    const match = lower.match(/r?\s*(\d+)/);
+    return match ? parseInt(match[1], 10) : 0;
+}
+
+// Helper: Check if an event's price matches the selected price filters
+function matchesPriceFilter(eventPrice, selectedPrices) {
+    if (selectedPrices.size === 0) return true; // No price filters applied, show all
+    
+    const priceVal = parsePrice(eventPrice);
+    
+    for (const filter of selectedPrices) {
+        if (filter === 'free' && priceVal === 0) return true;
+        if (filter === 'under200' && priceVal > 0 && priceVal < 200) return true;
+        if (filter === '200to500' && priceVal >= 200 && priceVal <= 500) return true;
+        if (filter === 'over500' && priceVal > 500) return true;
+    }
+    return false;
+}
+
+// Filter function: Takes an array of events and returns only those matching price filters
+function filterEventsByPrice(events) {
+    return events.filter(event => matchesPriceFilter(event.price, selectedPriceRanges));
+}
+
+// Event Listeners for Price Checkboxes
+document.querySelectorAll('.price-filter').forEach(checkbox => {
+    checkbox.addEventListener('change', (e) => {
+        // Update the Set based on checkbox state
+        if (e.target.checked) {
+            selectedPriceRanges.add(e.target.value);
+        } else {
+            selectedPriceRanges.delete(e.target.value);
+        }
+        
+        // Chain the filters: First get province-filtered events, then filter those by price
+        const provinceFiltered = getProvinceFilteredEvents();
+        applyAllFilters();
+        updateProvinceHint(); // Keeps your existing province hint working
+    });
+});
+
+// ==========================================
+// SEARCH FILTERING LOGIC
+// ==========================================
+let searchQuery = "";
+
+// Helper: Check if event matches the search query
+function matchesSearch(event, query) {
+    if (!query) return true; // No search query, show all
+    
+    const q = query.toLowerCase();
+    return (
+        (event.title && event.title.toLowerCase().includes(q)) ||
+        (event.province && event.province.toLowerCase().includes(q)) ||
+        (event.description && event.description.toLowerCase().includes(q)) ||
+        (event.category && event.category.toLowerCase().includes(q))
+    );
+}
+
+// Filter function: Takes an array of events and returns only those matching the search
+function filterEventsBySearch(events) {
+    return events.filter(event => matchesSearch(event, searchQuery));
+}
+
+// Master function to apply all filters in sequence
+function applyAllFilters() {
+    const provinceFiltered = getProvinceFilteredEvents();
+    const priceFiltered = filterEventsByPrice(provinceFiltered);
+    const searchFiltered = filterEventsBySearch(priceFiltered);
+    renderEvents(searchFiltered);
+    updateProvinceHint();
+}
+
+// Event Listeners for Search
+const searchInput = document.getElementById('searchInput');
+const searchBtn = document.getElementById('searchBtn');
+
+if (searchInput) {
+    // Real-time filtering as user types
+    searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim();
+        applyAllFilters();
+    });
+}
+
+if (searchBtn) {
+    searchBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        searchQuery = searchInput.value.trim();
+        applyAllFilters();
+    });
+}
+
+
+
 function showAuthenticatedUI(user) {
     const loginLink = document.getElementById('navLogin');
     const signupLink = document.getElementById('navSignup');
